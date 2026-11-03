@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* 🌟 Fullscreen Edge-to-Edge Reset (Removes all outer white borders & padding) */
+html,
+body,
+#root {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    width: 100% !important;
+    min-height: 100% !important;
+    background-color: #030712 !important;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
