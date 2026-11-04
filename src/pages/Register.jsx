@@ -9,14 +9,11 @@ import {
     ArrowLeft,
     Loader2,
     ShieldCheck,
-    BadgePercent,
-    Zap,
     Eye,
     EyeOff
 } from "lucide-react";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { useGoogleLogin } from "@react-oauth/google";
-import Button from "../components/common/Button";
 import Dialog from "../components/common/Dialog";
 import { registerApi, verifyRegistrationOtpApi, googleSignInApi, getErrorMessage } from "../api/authApi";
 import tokenService from "../utils/tokenService";
@@ -52,7 +49,7 @@ export default function RegisterPage() {
 
     const isAnyLoading = isSubmitLoading || isGoogleLoading || isOtpLoading || isResendLoading;
 
-    // 🌟 Dark Mode Cyber Network Animation
+    // Dark Mode Cyber Network Animation
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -111,6 +108,7 @@ export default function RegisterPage() {
 
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
+
                 node.x += node.vx;
                 node.y += node.vy;
 
@@ -182,6 +180,14 @@ export default function RegisterPage() {
                 }
 
                 tokenService.saveAuth(authData);
+                // 🌟 Clear form upon successful Google auth
+                setFormData({
+                    name: "",
+                    email: "",
+                    password: "",
+                    confirmPassword: "",
+                    agreeToTerms: false,
+                });
                 navigate("/dashboard");
             } catch (error) {
                 setErrorMessage(getErrorMessage(error));
@@ -218,8 +224,8 @@ export default function RegisterPage() {
 
         try {
             await registerApi({
-                name: formData.name,
-                email: formData.email,
+                name: formData.name.trim(),
+                email: formData.email.trim(),
                 password: formData.password,
                 turnstileToken,
             });
@@ -261,9 +267,20 @@ export default function RegisterPage() {
 
         try {
             await verifyRegistrationOtpApi({
-                email: formData.email,
+                email: formData.email.trim(),
                 otp: enteredOtp,
             });
+
+            // 🌟 Wipe all registration fields clean upon verified registration
+            setFormData({
+                name: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                agreeToTerms: false,
+            });
+            setOtp(["", "", "", "", "", ""]);
+            setTurnstileToken("");
 
             setShowSuccessDialog(true);
         } catch (error) {
@@ -287,12 +304,13 @@ export default function RegisterPage() {
 
         try {
             await registerApi({
-                name: formData.name,
-                email: formData.email,
+                name: formData.name.trim(),
+                email: formData.email.trim(),
                 password: formData.password,
                 turnstileToken,
             });
 
+            // 🌟 Clear OTP fields for clean re-entry
             setOtp(["", "", "", "", "", ""]);
             setResendStatus("New OTP sent successfully to your email!");
             setTurnstileToken("");
@@ -346,7 +364,6 @@ export default function RegisterPage() {
                                 : `Enter the 6-digit OTP code sent to ${formData.email}`}
                         </p>
                     </div>
-
 
                     {/* Google Button */}
                     {currentStep === 1 && (
@@ -408,7 +425,7 @@ export default function RegisterPage() {
                     {currentStep === 1 && (
                         <form onSubmit={handleRegisterSubmit} className="space-y-4 relative z-10">
                             <div>
-                                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                                <label htmlFor="reg-name" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                     Full Legal Name
                                 </label>
                                 <div className="relative flex items-center">
@@ -416,6 +433,7 @@ export default function RegisterPage() {
                                         <User size={17} />
                                     </span>
                                     <input
+                                        id="reg-name"
                                         type="text"
                                         name="name"
                                         required
@@ -429,7 +447,7 @@ export default function RegisterPage() {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                                <label htmlFor="reg-email" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                     Email Address
                                 </label>
                                 <div className="relative flex items-center">
@@ -437,6 +455,7 @@ export default function RegisterPage() {
                                         <Mail size={17} />
                                     </span>
                                     <input
+                                        id="reg-email"
                                         type="email"
                                         name="email"
                                         required
@@ -450,7 +469,7 @@ export default function RegisterPage() {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                                <label htmlFor="reg-password" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                     Create Password
                                 </label>
                                 <div className="relative flex items-center">
@@ -458,6 +477,7 @@ export default function RegisterPage() {
                                         <Lock size={17} />
                                     </span>
                                     <input
+                                        id="reg-password"
                                         type={showPassword ? "text" : "password"}
                                         name="password"
                                         required
@@ -478,7 +498,7 @@ export default function RegisterPage() {
                             </div>
 
                             <div>
-                                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                                <label htmlFor="reg-confirm" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                     Confirm Password
                                 </label>
                                 <div className="relative flex items-center">
@@ -486,6 +506,7 @@ export default function RegisterPage() {
                                         <Lock size={17} />
                                     </span>
                                     <input
+                                        id="reg-confirm"
                                         type={showConfirmPassword ? "text" : "password"}
                                         name="confirmPassword"
                                         required

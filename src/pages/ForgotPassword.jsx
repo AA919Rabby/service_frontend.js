@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
         e.preventDefault();
         if (isAnyLoading) return;
 
-        if (!email) {
+        if (!email.trim()) {
             setErrorMessage("Please enter your registered email address.");
             return;
         }
@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
         setIsSendOtpLoading(true);
 
         try {
-            await forgotPasswordApi({ email });
+            await forgotPasswordApi({ email: email.trim() });
             setCurrentStep(2);
         } catch (error) {
             setErrorMessage(getErrorMessage(error));
@@ -101,6 +101,8 @@ export default function ForgotPasswordPage() {
             const token = response?.forgotToken || response?.data?.forgotToken || enteredOtp;
             setForgotToken(token);
 
+            // 🌟 Clear OTP fields when moving to Step 3
+            setOtp(["", "", "", "", "", ""]);
             setCurrentStep(3);
         } catch (error) {
             setErrorMessage(getErrorMessage(error));
@@ -118,8 +120,9 @@ export default function ForgotPasswordPage() {
         setResendStatus("Resending code...");
 
         try {
-            await forgotPasswordApi({ email });
+            await forgotPasswordApi({ email: email.trim() });
 
+            // 🌟 Clear existing OTP input for fresh entry
             setOtp(["", "", "", "", "", ""]);
             setResendStatus("New verification OTP sent to your email!");
             setTimeout(() => setResendStatus(""), 4000);
@@ -155,6 +158,13 @@ export default function ForgotPasswordPage() {
                 newPassword,
             });
 
+            // 🌟 Clear all fields and sensitive state after successful password reset
+            setEmail("");
+            setNewPassword("");
+            setConfirmNewPassword("");
+            setForgotToken("");
+            setOtp(["", "", "", "", "", ""]);
+
             setCurrentStep(4);
         } catch (error) {
             setErrorMessage(getErrorMessage(error));
@@ -165,11 +175,11 @@ export default function ForgotPasswordPage() {
 
     return (
         <div className="relative min-h-screen w-full bg-[#030712] flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans selection:bg-indigo-500 selection:text-white overflow-hidden text-slate-100">
-            {/* Ambient Lighting Gradients (Static, No Canvas Animation) */}
+            {/* Ambient Lighting Gradients */}
             <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-indigo-600/10 via-blue-700/5 to-transparent blur-[140px] pointer-events-none" />
             <div className="absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-purple-700/10 via-indigo-600/5 to-transparent blur-[140px] pointer-events-none" />
 
-            {/* 🌟 Same Dark Glassmorphic Card Container as Login & Register */}
+            {/* Dark Glassmorphic Card Container */}
             <div className="relative z-10 w-full max-w-lg p-[1px] rounded-[2.5rem] bg-gradient-to-b from-slate-600/30 via-slate-700/15 to-slate-900/60 shadow-[0_0_80px_rgba(3,7,18,0.9),inset_0_1px_1px_rgba(255,255,255,0.15)] backdrop-blur-2xl transition-all duration-300">
                 <div className="w-full h-full bg-[#0b0f19]/90 rounded-[2.45rem] p-7 sm:p-10 border border-slate-700/40 relative overflow-hidden">
                     <div className="absolute -top-32 -left-32 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
