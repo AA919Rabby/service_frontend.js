@@ -6,9 +6,6 @@ import {
     Sparkles,
     AlertCircle,
     Loader2,
-    RotateCcw,
-    CreditCard,
-    Headphones,
     ShieldCheck,
     Eye,
     EyeOff
@@ -38,7 +35,7 @@ export default function LoginPage() {
 
     const isAnyLoading = isEmailLoading || isGoogleLoading;
 
-    // 🌟 Dark Mode Cyber Network Animation
+    // Dark Mode Cyber Network Animation
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -97,6 +94,7 @@ export default function LoginPage() {
 
             for (let i = 0; i < nodes.length; i++) {
                 const node = nodes[i];
+
                 node.x += node.vx;
                 node.y += node.vy;
 
@@ -180,7 +178,7 @@ export default function LoginPage() {
 
         try {
             const response = await loginApi({
-                email: formData.email,
+                email: formData.email.trim(),
                 password: formData.password,
                 turnstileToken,
             });
@@ -193,14 +191,27 @@ export default function LoginPage() {
 
             if (!token || response?.success === false) {
                 setErrorMessage(response?.message || response?.error || "Login rejected by server.");
+                // 🌟 Clear password field on failed attempt
+                setFormData((prev) => ({ ...prev, password: "" }));
                 turnstileRef.current?.reset();
                 return;
             }
 
             tokenService.saveAuth(response);
+
+            // 🌟 Wipe all credentials clean on successful login before navigation
+            setFormData({
+                email: "",
+                password: "",
+                rememberMe: false,
+            });
+            setTurnstileToken("");
+
             navigate("/dashboard");
         } catch (error) {
             setErrorMessage(getErrorMessage(error));
+            // 🌟 Clear password field on error
+            setFormData((prev) => ({ ...prev, password: "" }));
             turnstileRef.current?.reset();
         } finally {
             setIsEmailLoading(false);
@@ -227,6 +238,15 @@ export default function LoginPage() {
                 }
 
                 tokenService.saveAuth(authData);
+
+                // 🌟 Clear form data
+                setFormData({
+                    email: "",
+                    password: "",
+                    rememberMe: false,
+                });
+                setTurnstileToken("");
+
                 navigate("/dashboard");
             } catch (error) {
                 setErrorMessage(getErrorMessage(error));
@@ -271,7 +291,6 @@ export default function LoginPage() {
                             Sign in to track orders, manage active bookings &amp; view invoices
                         </p>
                     </div>
-
 
                     {/* Google Button */}
                     <div className="relative z-10">
@@ -327,7 +346,7 @@ export default function LoginPage() {
                         <input type="password" name="fakepasswordremembered" style={{ display: "none" }} tabIndex={-1} autoComplete="off" />
 
                         <div>
-                            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                            <label htmlFor="login-email" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                 Work or Personal Email
                             </label>
                             <div className="relative flex items-center">
@@ -335,6 +354,7 @@ export default function LoginPage() {
                                     <Mail size={17} />
                                 </span>
                                 <input
+                                    id="login-email"
                                     type="email"
                                     name="email"
                                     required
@@ -349,7 +369,7 @@ export default function LoginPage() {
                         </div>
 
                         <div>
-                            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
+                            <label htmlFor="login-password" className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5 ml-1">
                                 Password
                             </label>
                             <div className="relative flex items-center">
@@ -357,6 +377,7 @@ export default function LoginPage() {
                                     <Lock size={17} />
                                 </span>
                                 <input
+                                    id="login-password"
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     required
