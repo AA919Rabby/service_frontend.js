@@ -10,6 +10,7 @@ import OrdersPage from "../pages/Orders";
 import NotificationsPage from "../pages/Notifications";
 import ProfilePage from "../pages/Profile";
 import SavedPage from "../pages/Saved";
+import AboutUsPage from "../pages/AboutUs";
 
 
 
@@ -41,6 +42,7 @@ export default function AppRoutes() {
             {/* Service Details in New Tab */}
             <Route path="/service/:id" element={<ServiceDetails />} />
             <Route path="/orders" element={<PrivateRoute><OrdersPage /></PrivateRoute>} />
+            <Route path="/about-us" element={<AboutUsPage />} />
             <Route
                 path="/notifications"
                 element={

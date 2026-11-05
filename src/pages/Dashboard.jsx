@@ -5,7 +5,7 @@ import {
     Search, Sparkles, Star, LogOut,
     ChevronLeft, ChevronRight, Layers, ShieldCheck,
     RefreshCw, Menu, X,
-    ShoppingBag, Home, Bot, User, Heart, Bell
+    ShoppingBag, Home, Bot, User, Heart, Bell, Info
 } from "lucide-react";
 import Button from "../components/common/Button";
 import tokenService from "../utils/tokenService";
@@ -14,7 +14,6 @@ import { getProfileApi } from "../api/profileApi";
 import AiAssistantModal from "../components/services/ai/AiAssistantModal";
 import { selectSavedItems, toggleSaveService } from "../features/saved/savedSlice";
 
-// 🌟 Import Separated Custom Skeletons
 import {
     ServicesGridSkeleton,
     CategoryTabsSkeleton,
@@ -26,7 +25,6 @@ export default function Dashboard() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // Redux Saved Items
     const savedItems = useSelector(selectSavedItems);
 
     const [currentUser, setCurrentUser] = useState(null);
@@ -34,7 +32,6 @@ export default function Dashboard() {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isAiModalOpen, setIsAiModalOpen] = useState(false);
 
-    // Filter & Pagination States
     const [categories, setCategories] = useState([]);
     const [isCategoriesLoading, setIsCategoriesLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState("all");
@@ -43,11 +40,9 @@ export default function Dashboard() {
     const [limit] = useState(6);
     const [totalPages, setTotalPages] = useState(1);
 
-    // Service Listings State
     const [services, setServices] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Auth & Fresh Profile on mount
     useEffect(() => {
         if (!tokenService.isAuthenticated()) {
             navigate("/login");
@@ -74,7 +69,6 @@ export default function Dashboard() {
             });
     }, [navigate]);
 
-    // Load Categories
     useEffect(() => {
         setIsCategoriesLoading(true);
         getCategoriesApi()
@@ -88,7 +82,6 @@ export default function Dashboard() {
             });
     }, []);
 
-    // Fetch Services
     const fetchServices = async (forcedCategory = selectedCategory, forcedSearch = searchQuery) => {
         setIsLoading(true);
         try {
@@ -136,16 +129,13 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen bg-[#030712] text-slate-100 pb-16 font-sans selection:bg-indigo-500 selection:text-white">
 
-            {/* Slide-out Drawer Backdrop */}
             {isDrawerOpen && (
                 <div onClick={() => setIsDrawerOpen(false)} className="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm transition-opacity" />
             )}
 
-            {/* Sidebar Drawer (Dark Theme) */}
             <aside className={`fixed top-0 left-0 z-50 h-full w-80 bg-[#0b0f19] border-r border-slate-800 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col justify-between ${isDrawerOpen ? "translate-x-0" : "-translate-x-full"
                 }`}>
                 <div>
-                    {/* Drawer Header */}
                     <div className="p-6 border-b border-slate-800 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md">
@@ -162,7 +152,6 @@ export default function Dashboard() {
                         </button>
                     </div>
 
-                    {/* Navigation Links */}
                     <nav className="p-4 space-y-1.5">
                         <button
                             onClick={() => { setIsDrawerOpen(false); navigate("/dashboard"); }}
@@ -170,6 +159,14 @@ export default function Dashboard() {
                         >
                             <Home size={18} />
                             <span>Explore Marketplace</span>
+                        </button>
+
+                        <button
+                            onClick={() => { setIsDrawerOpen(false); navigate("/about-us"); }}
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-900 text-slate-400 hover:text-white font-bold text-sm transition text-left cursor-pointer"
+                        >
+                            <Info size={18} />
+                            <span>About Us</span>
                         </button>
 
                         <button
@@ -221,7 +218,6 @@ export default function Dashboard() {
                     </nav>
                 </div>
 
-                {/* Bottom Profile Card */}
                 <div className="p-6 border-t border-slate-800 bg-slate-900/40 space-y-3">
                     {isProfileLoading ? (
                         <DrawerProfileSkeleton />
@@ -263,7 +259,7 @@ export default function Dashboard() {
                 </div>
             </aside>
 
-            {/* Header */}
+            {/* Header: About Us is placed directly beside Saved */}
             <header className="sticky top-0 z-30 bg-[#0b0f19]/90 border-b border-slate-800 backdrop-blur-md shadow-xs">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
@@ -281,8 +277,16 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Saved Services Header Button */}
-                    <div className="flex items-center gap-2.5">
+                    {/* Right Header Navigation: About Us + Saved */}
+                    <div className="flex items-center gap-3">
+                        <Link
+                            to="/about-us"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white font-bold text-xs transition"
+                        >
+                            <Info size={16} className="text-indigo-400" />
+                            <span>About Us</span>
+                        </Link>
+
                         <button
                             onClick={() => navigate("/saved")}
                             className="relative flex items-center gap-2 px-4 py-2.5 rounded-2xl border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold text-xs transition cursor-pointer"
@@ -373,7 +377,7 @@ export default function Dashboard() {
                 )}
             </section>
 
-            {/* Services Grid with Custom Dark Skeletons */}
+            {/* Services Grid */}
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                 {isLoading ? (
                     <ServicesGridSkeleton count={6} />
@@ -519,7 +523,6 @@ export default function Dashboard() {
                 </button>
             )}
 
-            {/* AI Assistant Modal */}
             <AiAssistantModal
                 isOpen={isAiModalOpen}
                 onClose={() => setIsAiModalOpen(false)}
