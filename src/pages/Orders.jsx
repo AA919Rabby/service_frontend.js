@@ -728,13 +728,7 @@ export default function Orders() {
                                     </div>
 
                                     <div className="flex items-center gap-2.5 self-start lg:self-center shrink-0">
-                                        <button
-                                            onClick={() => setSelectedOrder(order)}
-                                            className="px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer border border-indigo-100"
-                                        >
-                                            <Eye size={15} />
-                                            <span>View Details</span>
-                                        </button>
+
 
                                         {isCancelable && (
                                             <button

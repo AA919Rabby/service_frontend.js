@@ -1042,7 +1042,7 @@ export default function Dashboard() {
                                             to={`/service/${itemId}`}
                                             className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-indigo-100 bg-gradient-to-r from-indigo-50 to-blue-50 px-4 py-2 text-xs font-bold text-indigo-700 transition hover:border-indigo-200 hover:from-indigo-600 hover:to-blue-600 hover:text-white"
                                         >
-                                            <span>View Details</span>
+                                            <span>ils</span>
                                             <span className="text-[14px]">&rarr;</span>
                                         </Link>
                                     </div>
