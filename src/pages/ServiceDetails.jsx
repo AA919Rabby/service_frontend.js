@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from "react";
 // import { useParams, Link, useNavigate } from "react-router-dom";
 // import { useSelector, useDispatch } from "react-redux";
@@ -589,6 +590,7 @@
 
 
 
+
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -776,20 +778,22 @@ export default function ServiceDetails() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#030712] flex flex-col items-center justify-center gap-3 font-sans text-slate-100">
-                <Loader2 size={40} className="animate-spin text-indigo-400" />
-                <p className="text-sm font-bold text-slate-400">Loading service details...</p>
+            <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-3 font-sans text-slate-900">
+                <Loader2 size={40} className="animate-spin text-indigo-600" />
+                <p className="text-sm font-bold text-slate-500">Loading service details...</p>
             </div>
         );
     }
 
     if (error || !service) {
         return (
-            <div className="min-h-screen bg-[#030712] flex flex-col items-center justify-center p-6 text-center font-sans text-slate-100">
-                <AlertCircle size={48} className="text-rose-500 mb-3" />
-                <h2 className="text-xl font-black text-white mb-2">Service Not Found</h2>
-                <p className="text-xs text-slate-400 mb-6">{error || "This listing is unavailable."}</p>
-                <Link to="/dashboard" className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs">
+            <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-6 text-center font-sans text-slate-900">
+                <div className="w-20 h-20 rounded-2xl bg-rose-50 border border-rose-100 flex items-center justify-center mb-3">
+                    <AlertCircle size={42} className="text-rose-500" />
+                </div>
+                <h2 className="text-xl font-black text-slate-900 mb-2">Service Not Found</h2>
+                <p className="text-sm text-slate-500 mb-6">{error || "This listing is unavailable."}</p>
+                <Link to="/dashboard" className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-indigo-200 hover:from-blue-700 hover:to-indigo-700 transition">
                     Return to Marketplace
                 </Link>
             </div>
@@ -816,130 +820,131 @@ export default function ServiceDetails() {
         "Verified Professional";
 
     return (
-        <div className="min-h-screen bg-[#030712] text-slate-100 font-sans pb-20 selection:bg-indigo-500 selection:text-white">
-            {/* Order Modal */}
+        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans pb-20 selection:bg-indigo-100 selection:text-indigo-700">
             {isOrderModalOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in overflow-y-auto">
-                    <div className="w-full max-w-lg bg-[#0b0f19] rounded-3xl border border-slate-800 shadow-2xl p-6 sm:p-8 space-y-4 my-8 text-slate-100">
-                        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm animate-fade-in overflow-y-auto">
+                    <div className="w-full max-w-lg bg-white rounded-3xl border border-slate-200 shadow-2xl p-6 sm:p-8 space-y-4 my-8 text-slate-900">
+                        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                             <div>
-                                <h3 className="text-lg font-black text-white">Complete Your Order</h3>
-                                <p className="text-xs text-slate-400">{service.title}</p>
+                                <h3 className="text-lg font-black text-slate-900">Complete Your Order</h3>
+                                <p className="text-xs text-slate-500 mt-1">{service.title}</p>
                             </div>
-                            <button onClick={() => setIsOrderModalOpen(false)} className="p-1 rounded-xl text-slate-400 hover:text-white cursor-pointer">
+                            <button onClick={() => setIsOrderModalOpen(false)} className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                                 <X size={20} />
                             </button>
                         </div>
 
                         {orderSuccessMsg ? (
-                            <div className="py-10 text-center space-y-2">
-                                <CheckCircle2 size={48} className="text-emerald-400 mx-auto animate-bounce" />
-                                <h4 className="font-black text-white text-base">{orderSuccessMsg}</h4>
-                                <p className="text-xs text-slate-400">Redirecting to payment gateway...</p>
+                            <div className="py-10 text-center space-y-3">
+                                <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mx-auto">
+                                    <CheckCircle2 size={36} className="text-emerald-500 animate-bounce" />
+                                </div>
+                                <h4 className="font-black text-slate-900 text-base">{orderSuccessMsg}</h4>
+                                <p className="text-xs text-slate-500">Redirecting to payment gateway...</p>
                             </div>
                         ) : (
                             <form onSubmit={handlePlaceOrderSubmit} className="space-y-3.5 text-xs">
                                 <div>
-                                    <label className="block font-bold text-slate-300 uppercase mb-1">Quantity / Slots</label>
+                                    <label className="block font-bold text-slate-600 uppercase mb-1.5">Quantity / Slots</label>
                                     <input
                                         type="number"
                                         min="1"
                                         max={service.stock || 10}
                                         value={orderQuantity}
                                         onChange={(e) => setOrderQuantity(e.target.value)}
-                                        className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-bold outline-none focus:border-indigo-400"
+                                        className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-bold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label className="block font-bold text-slate-300 uppercase mb-1">Receiver Name *</label>
+                                        <label className="block font-bold text-slate-600 uppercase mb-1.5">Receiver Name *</label>
                                         <input
                                             type="text"
                                             required
                                             value={shippingForm.receiverName}
                                             onChange={(e) => setShippingForm({ ...shippingForm, receiverName: e.target.value })}
-                                            className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold outline-none focus:border-indigo-400"
+                                            className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-semibold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block font-bold text-slate-300 uppercase mb-1">Phone Number *</label>
+                                        <label className="block font-bold text-slate-600 uppercase mb-1.5">Phone Number *</label>
                                         <input
                                             type="tel"
                                             required
                                             value={shippingForm.phoneNumber}
                                             onChange={(e) => setShippingForm({ ...shippingForm, phoneNumber: e.target.value })}
-                                            className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold outline-none focus:border-indigo-400"
+                                            className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-semibold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-300 uppercase mb-1">Location Address *</label>
+                                    <label className="block font-bold text-slate-600 uppercase mb-1.5">Location Address *</label>
                                     <input
                                         type="text"
                                         required
                                         value={shippingForm.locationAddress}
                                         onChange={(e) => setShippingForm({ ...shippingForm, locationAddress: e.target.value })}
-                                        className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold outline-none focus:border-indigo-400"
+                                        className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-semibold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                     />
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label className="block font-bold text-slate-300 uppercase mb-1">City *</label>
+                                        <label className="block font-bold text-slate-600 uppercase mb-1.5">City *</label>
                                         <input
                                             type="text"
                                             required
                                             value={shippingForm.city}
                                             onChange={(e) => setShippingForm({ ...shippingForm, city: e.target.value })}
-                                            className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold outline-none focus:border-indigo-400"
+                                            className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-semibold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block font-bold text-slate-300 uppercase mb-1">Postcode / Zip *</label>
+                                        <label className="block font-bold text-slate-600 uppercase mb-1.5">Postcode / Zip *</label>
                                         <input
                                             type="text"
                                             required
                                             value={shippingForm.postcode}
                                             onChange={(e) => setShippingForm({ ...shippingForm, postcode: e.target.value })}
-                                            className="w-full px-3.5 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white font-semibold outline-none focus:border-indigo-400"
+                                            className="w-full px-3.5 py-3 rounded-xl bg-white border border-slate-200 text-slate-900 font-semibold outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 transition"
                                         />
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block font-bold text-slate-300 uppercase mb-2">Select Payment Method</label>
+                                    <label className="block font-bold text-slate-600 uppercase mb-2">Select Payment Method</label>
                                     <div className="grid grid-cols-2 gap-3">
                                         <button
                                             type="button"
                                             onClick={() => setPaymentMethod("STRIPE")}
                                             className={`p-3 rounded-2xl border font-bold text-xs flex flex-col items-center gap-1.5 transition cursor-pointer ${paymentMethod === "STRIPE"
-                                                ? "border-indigo-500 bg-indigo-500/10 text-white shadow-sm"
-                                                : "border-slate-800 bg-slate-900/60 text-slate-400 hover:bg-slate-800"
+                                                ? "border-indigo-400 bg-indigo-50 text-indigo-700 shadow-sm ring-2 ring-indigo-100"
+                                                : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
                                                 }`}
                                         >
-                                            <CreditCard size={18} className="text-indigo-400" />
+                                            <CreditCard size={18} className="text-indigo-600" />
                                             <span>Stripe (Card)</span>
-                                            <span className="text-[10px] text-slate-400">Visa, Mastercard</span>
+                                            <span className="text-[10px] text-slate-500">Visa, Mastercard</span>
                                         </button>
 
                                         <button
                                             type="button"
                                             onClick={() => setPaymentMethod("SSLCOMMERZ")}
                                             className={`p-3 rounded-2xl border font-bold text-xs flex flex-col items-center gap-1.5 transition cursor-pointer ${paymentMethod === "SSLCOMMERZ"
-                                                ? "border-rose-500 bg-rose-500/10 text-white shadow-sm"
-                                                : "border-slate-800 bg-slate-900/60 text-slate-400 hover:bg-slate-800"
+                                                ? "border-rose-300 bg-rose-50 text-rose-700 shadow-sm ring-2 ring-rose-100"
+                                                : "border-slate-200 bg-white text-slate-500 hover:bg-slate-50"
                                                 }`}
                                         >
-                                            <span className="text-sm font-black text-rose-400">bKash / Nagad</span>
+                                            <span className="text-sm font-black text-rose-500">bKash / Nagad</span>
                                             <span>SSLCommerz</span>
-                                            <span className="text-[10px] text-slate-400">Local Mobile Banking</span>
+                                            <span className="text-[10px] text-slate-500">Local Mobile Banking</span>
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="pt-2 border-t border-slate-800 flex items-center justify-between font-black text-sm text-white">
+                                <div className="pt-3 border-t border-slate-100 flex items-center justify-between font-black text-sm text-slate-900">
                                     <span>Total Amount:</span>
                                     <span>${(Number(service.price) * orderQuantity).toFixed(2)} USD</span>
                                 </div>
@@ -947,7 +952,7 @@ export default function ServiceDetails() {
                                 <button
                                     type="submit"
                                     disabled={isPlacingOrder}
-                                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs shadow-md transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                                    className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                                 >
                                     {isPlacingOrder ? <Loader2 size={16} className="animate-spin" /> : <span>Confirm &amp; Place Order</span>}
                                 </button>
@@ -957,21 +962,20 @@ export default function ServiceDetails() {
                 </div>
             )}
 
-            {/* Top Navigation */}
-            <header className="sticky top-0 z-30 bg-[#0b0f19]/90 border-b border-slate-800 backdrop-blur-md">
+            <header className="sticky top-0 z-30 bg-white/90 border-b border-slate-200 backdrop-blur-xl shadow-sm">
                 <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link to="/dashboard" className="inline-flex items-center gap-2 text-base font-bold text-slate-300 hover:text-indigo-400 transition cursor-pointer">
-                        <ArrowLeft size={20} /> Back
+                    <Link to="/dashboard" className="inline-flex items-center gap-2 text-base font-bold text-slate-600 hover:text-indigo-600 transition-colors cursor-pointer">
+                        <ArrowLeft size={20} />
+                        Back
                     </Link>
                 </div>
             </header>
 
             <main className="max-w-6xl mx-auto px-4 pt-8">
-                <div className="bg-[#0b0f19]/90 border border-slate-800 rounded-[2.5rem] p-6 sm:p-10 shadow-sm space-y-8">
-                    {/* Gallery + Price Box */}
+                <div className="bg-white border border-slate-200 rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-10 shadow-sm space-y-8">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                         <div className="lg:col-span-7 space-y-4">
-                            <div className="h-80 sm:h-96 w-full rounded-3xl overflow-hidden bg-slate-900 border border-slate-800">
+                            <div className="h-80 sm:h-96 w-full rounded-3xl overflow-hidden bg-slate-100 border border-slate-200">
                                 <img
                                     src={getImageUrl(images[activeImgIdx])}
                                     alt={service.title}
@@ -986,7 +990,7 @@ export default function ServiceDetails() {
                                         <button
                                             key={idx}
                                             onClick={() => setActiveImgIdx(idx)}
-                                            className={`h-20 w-24 rounded-2xl overflow-hidden border-2 shrink-0 transition ${activeImgIdx === idx ? "border-indigo-500 shadow-md scale-95" : "border-slate-800 opacity-60 hover:opacity-100"
+                                            className={`h-20 w-24 rounded-2xl overflow-hidden border-2 shrink-0 transition ${activeImgIdx === idx ? "border-indigo-500 shadow-md shadow-indigo-100 scale-95" : "border-slate-200 opacity-70 hover:opacity-100"
                                                 }`}
                                         >
                                             <img
@@ -1001,20 +1005,20 @@ export default function ServiceDetails() {
                             )}
                         </div>
 
-                        <div className="lg:col-span-5 bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6">
+                        <div className="lg:col-span-5 bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6">
                             <div className="flex items-start justify-between gap-3">
                                 <div>
-                                    <span className="text-xs font-bold uppercase text-indigo-400 bg-indigo-500/10 border border-indigo-400/20 px-3 py-1 rounded-xl inline-block mb-3">
+                                    <span className="text-xs font-bold uppercase text-indigo-700 bg-indigo-50 border border-indigo-100 px-3 py-1.5 rounded-xl inline-block mb-3">
                                         {service.category?.name || "Service"}
                                     </span>
-                                    <h1 className="text-2xl font-black text-white leading-snug">{service.title}</h1>
+                                    <h1 className="text-2xl font-black text-slate-900 leading-snug">{service.title}</h1>
                                 </div>
 
                                 <button
                                     onClick={() => dispatch(toggleSaveService(service))}
                                     className={`p-3 rounded-2xl border transition-all duration-200 cursor-pointer shadow-sm ${isSaved
-                                        ? "border-rose-500/40 bg-rose-500/10 text-rose-500 scale-105"
-                                        : "border-slate-800 bg-slate-900 text-slate-400 hover:text-rose-500 hover:border-rose-500/40"
+                                        ? "border-rose-200 bg-rose-50 text-rose-500 scale-105"
+                                        : "border-slate-200 bg-white text-slate-400 hover:text-rose-500 hover:border-rose-200"
                                         }`}
                                     title={isSaved ? "Remove from saved" : "Save this service"}
                                 >
@@ -1022,31 +1026,31 @@ export default function ServiceDetails() {
                                 </button>
                             </div>
 
-                            <div className="pt-4 border-t border-slate-800">
-                                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">Standard Price</span>
-                                <div className="text-4xl font-black text-white mt-1">${Number(service.price).toFixed(2)}</div>
+                            <div className="pt-4 border-t border-slate-200">
+                                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest block">Standard Price</span>
+                                <div className="text-4xl font-black text-slate-900 mt-1">${Number(service.price).toFixed(2)}</div>
                             </div>
 
-                            <div className="space-y-3 text-xs pt-2 border-t border-slate-800">
-                                <div className="flex items-center gap-2.5 text-slate-300">
-                                    <MapPin size={16} className="text-indigo-400 shrink-0" />
+                            <div className="space-y-3 text-xs pt-2 border-t border-slate-200">
+                                <div className="flex items-center gap-2.5 text-slate-600">
+                                    <MapPin size={16} className="text-indigo-600 shrink-0" />
                                     <span className="font-semibold">{service.location || "Dhaka, Bangladesh"}</span>
                                 </div>
-                                <div className="flex items-center gap-2.5 text-slate-300">
-                                    <Phone size={16} className="text-emerald-400 shrink-0" />
-                                    <a href={`tel:${service.phoneNumber}`} className="font-bold hover:underline">
+                                <div className="flex items-center gap-2.5 text-slate-600">
+                                    <Phone size={16} className="text-emerald-600 shrink-0" />
+                                    <a href={`tel:${service.phoneNumber}`} className="font-bold hover:text-indigo-600 hover:underline">
                                         {service.phoneNumber}
                                     </a>
                                 </div>
-                                <div className="flex items-center gap-2.5 text-slate-300">
-                                    <Package size={16} className="text-amber-400 shrink-0" />
-                                    <span>Available Slots / Stock: <strong className="text-white">{service.stock}</strong></span>
+                                <div className="flex items-center gap-2.5 text-slate-600">
+                                    <Package size={16} className="text-amber-500 shrink-0" />
+                                    <span>Available Slots / Stock: <strong className="text-slate-900">{service.stock}</strong></span>
                                 </div>
                             </div>
 
                             <button
                                 onClick={() => setIsOrderModalOpen(true)}
-                                className="w-full py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-[0_4px_0_#4338ca] transition flex items-center justify-center gap-2 cursor-pointer"
+                                className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-sm shadow-lg shadow-indigo-200 transition flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <ShoppingBag size={18} />
                                 <span>Book This Service</span>
@@ -1054,18 +1058,17 @@ export default function ServiceDetails() {
                         </div>
                     </div>
 
-                    <div className="pt-6 border-t border-slate-800 space-y-3">
-                        <h2 className="text-lg font-black text-white">About this service</h2>
-                        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                    <div className="pt-6 border-t border-slate-100 space-y-3">
+                        <h2 className="text-lg font-black text-slate-900">About this service</h2>
+                        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">
                             {service.description}
                         </p>
                     </div>
 
-                    {/* Service Provider */}
-                    <div className="pt-6 border-t border-slate-800">
-                        <h3 className="text-sm font-black text-slate-400 uppercase tracking-wider mb-3">Service Provider</h3>
-                        <div className="p-4 rounded-2xl border border-slate-800 bg-slate-900/60 flex items-center gap-3.5">
-                            <div className="h-12 w-12 rounded-full bg-indigo-600 text-white font-black text-base flex items-center justify-center shrink-0 overflow-hidden border border-slate-700 shadow-xs">
+                    <div className="pt-6 border-t border-slate-100">
+                        <h3 className="text-sm font-black text-slate-500 uppercase tracking-wider mb-3">Service Provider</h3>
+                        <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-center gap-3.5">
+                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white font-black text-base flex items-center justify-center shrink-0 overflow-hidden border border-indigo-100 shadow-sm">
                                 {providerAvatar ? (
                                     <img
                                         src={getImageUrl(providerAvatar)}
@@ -1079,21 +1082,20 @@ export default function ServiceDetails() {
                             </div>
 
                             <div>
-                                <div className="font-bold text-xs text-white flex items-center gap-1.5">
+                                <div className="font-bold text-xs text-slate-900 flex items-center gap-1.5">
                                     <span>{providerName}</span>
-                                    <ShieldCheck size={15} className="text-indigo-400" />
+                                    <ShieldCheck size={15} className="text-indigo-600" />
                                 </div>
-                                <span className="text-[11px] text-slate-400 block mt-0.5">Verified TN Services Partner</span>
+                                <span className="text-[11px] text-slate-500 block mt-0.5">Verified TN Services Partner</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Client Reviews */}
-                    <div className="pt-6 border-t border-slate-800 space-y-6">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-black text-white">Client Reviews</h3>
+                    <div className="pt-6 border-t border-slate-100 space-y-6">
+                        <div className="flex items-center justify-between gap-3">
+                            <h3 className="text-lg font-black text-slate-900">Client Reviews</h3>
                             {service.totalReviews > 0 ? (
-                                <div className="flex items-center gap-1.5 text-amber-400 font-bold text-xs">
+                                <div className="flex items-center gap-1.5 text-amber-500 font-bold text-xs">
                                     <Star size={16} fill="currentColor" />
                                     <span>{Number(service.rating).toFixed(1)}</span>
                                     <span className="text-slate-400 font-normal">({service.totalReviews} reviews)</span>
@@ -1103,8 +1105,8 @@ export default function ServiceDetails() {
                             )}
                         </div>
 
-                        <form onSubmit={handleReviewSubmit} className="p-5 rounded-3xl bg-slate-900/50 border border-slate-800 space-y-3">
-                            <span className="font-bold text-xs text-slate-200 block">Leave a Verified Review:</span>
+                        <form onSubmit={handleReviewSubmit} className="p-5 rounded-3xl bg-slate-50 border border-slate-200 space-y-3">
+                            <span className="font-bold text-xs text-slate-700 block">Leave a Verified Review:</span>
 
                             <div className="flex items-center gap-1">
                                 {[1, 2, 3, 4, 5].map((star) => (
@@ -1112,12 +1114,12 @@ export default function ServiceDetails() {
                                         type="button"
                                         key={star}
                                         onClick={() => setUserRating(star)}
-                                        className="p-1 text-amber-400 hover:scale-110 transition cursor-pointer"
+                                        className="p-1 text-amber-500 hover:scale-110 transition cursor-pointer"
                                     >
                                         <Star size={20} fill={star <= userRating ? "currentColor" : "none"} />
                                     </button>
                                 ))}
-                                <span className="text-xs font-bold text-slate-400 ml-2">{userRating} Stars</span>
+                                <span className="text-xs font-bold text-slate-500 ml-2">{userRating} Stars</span>
                             </div>
 
                             <textarea
@@ -1126,45 +1128,45 @@ export default function ServiceDetails() {
                                 placeholder="Share your experience with this service..."
                                 value={userComment}
                                 onChange={(e) => setUserComment(e.target.value)}
-                                className="w-full px-4 py-2.5 rounded-xl border border-slate-700 text-xs font-medium outline-none focus:border-indigo-400 bg-slate-900 text-white"
+                                className="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs font-medium outline-none focus:border-indigo-400 focus:ring-4 focus:ring-indigo-50 bg-white text-slate-900 placeholder:text-slate-400 transition"
                             />
 
                             <button
                                 type="submit"
                                 disabled={isSubmittingReview}
-                                className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-100 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                             >
                                 {isSubmittingReview ? <Loader2 size={14} className="animate-spin" /> : <Send size={14} />}
                                 <span>Post Review</span>
                             </button>
 
                             {reviewToast && (
-                                <span className="text-xs font-bold text-emerald-400 block">{reviewToast}</span>
+                                <span className="text-xs font-bold text-emerald-600 block">{reviewToast}</span>
                             )}
                         </form>
 
                         {service.reviews && service.reviews.length > 0 ? (
                             <div className="space-y-3">
                                 {service.reviews.map((rev) => (
-                                    <div key={rev.id} className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-2 text-xs">
+                                    <div key={rev.id} className="p-4 rounded-2xl bg-white border border-slate-200 space-y-2 text-xs">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 {rev.reviewer?.avatar ? (
-                                                    <img src={getImageUrl(rev.reviewer.avatar)} alt="" className="h-6 w-6 rounded-full object-cover" />
+                                                    <img src={getImageUrl(rev.reviewer.avatar)} alt="" className="h-7 w-7 rounded-full object-cover border border-slate-200" />
                                                 ) : (
-                                                    <div className="h-6 w-6 rounded-full bg-slate-800 font-bold text-[10px] flex items-center justify-center text-slate-300">
+                                                    <div className="h-7 w-7 rounded-full bg-indigo-50 border border-indigo-100 font-bold text-[10px] flex items-center justify-center text-indigo-600">
                                                         {rev.reviewer?.name?.charAt(0) || "U"}
                                                     </div>
                                                 )}
-                                                <span className="font-bold text-slate-200">{rev.reviewer?.name || "Client"}</span>
+                                                <span className="font-bold text-slate-800">{rev.reviewer?.name || "Client"}</span>
                                             </div>
-                                            <div className="flex text-amber-400">
+                                            <div className="flex text-amber-500">
                                                 {[...Array(5)].map((_, i) => (
                                                     <Star key={i} size={12} fill={i < rev.rating ? "currentColor" : "none"} />
                                                 ))}
                                             </div>
                                         </div>
-                                        <p className="text-slate-400 italic">"{rev.comment}"</p>
+                                        <p className="text-slate-500 italic">"{rev.comment}"</p>
                                     </div>
                                 ))}
                             </div>
